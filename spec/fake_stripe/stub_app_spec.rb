@@ -106,6 +106,16 @@ describe FakeStripe::StubApp do
     end
   end
 
+  describe "POST /v1/subscriptions" do
+    it "increments the subscription counter" do
+      customer = Stripe::Customer.retrieve("ABC123")
+
+      expect do
+        customer.subscriptions.create(plan: "xyz890")
+      end.to change(FakeStripe, :subscription_count).by(1)
+    end
+  end
+
   describe "POST /v1/plans" do
     it "increments the plan counter" do
       expect do
